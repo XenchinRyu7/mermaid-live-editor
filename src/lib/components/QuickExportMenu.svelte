@@ -22,7 +22,7 @@
 
   const onExportPNG = () => {
     if (!$urlsStore.png) {
-      notify('PNG export URL is not available.');
+      notify('Unable to export PNG. Please wait for the diagram to finish rendering.');
       return;
     }
     simulateDownload(getFileName('png'), $urlsStore.png);
@@ -32,7 +32,7 @@
 
   const onExportSVG = () => {
     if (!$urlsStore.svg) {
-      notify('SVG export URL is not available.');
+      notify('Unable to export SVG. Please wait for the diagram to finish rendering.');
       return;
     }
     simulateDownload(getFileName('svg'), $urlsStore.svg);
