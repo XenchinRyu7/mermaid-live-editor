@@ -1,31 +1,43 @@
 <script lang="ts">
   import { Button } from '$/components/ui/button';
   import * as Popover from '$/components/ui/popover';
-  import { TID } from '$/constants';
   import { notify } from '$/util/notify';
+  import { urlsStore } from '$/util/state';
   import { logEvent } from '$/util/stats';
+  import dayjs from 'dayjs';
   import DownloadIcon from '~icons/material-symbols/download';
 
   let open = $state(false);
 
-  const clickExportButton = (testID: string): void => {
-    const button = document.querySelector<HTMLButtonElement>(`[data-testid="${testID}"]`);
-    if (!button) {
-      notify('Export is not ready yet. Please try again.');
-      return;
-    }
-    button.click();
-    open = false;
+  const getFileName = (extension: string) =>
+    `mermaid-diagram-${dayjs().format('YYYY-MM-DD-HHmmss')}.${extension}`;
+
+  const simulateDownload = (download: string, href: string): void => {
+    const a = document.createElement('a');
+    a.download = download;
+    a.href = href;
+    a.click();
+    a.remove();
   };
 
   const onExportPNG = () => {
-    clickExportButton(TID.downloadPNG);
-    logEvent('downloadMenu', { type: 'png' });
+    if (!$urlsStore.png) {
+      notify('PNG export URL is not available.');
+      return;
+    }
+    simulateDownload(getFileName('png'), $urlsStore.png);
+    logEvent('download', { source: 'top_menu', type: 'png' });
+    open = false;
   };
 
   const onExportSVG = () => {
-    clickExportButton(TID.downloadSVG);
-    logEvent('downloadMenu', { type: 'svg' });
+    if (!$urlsStore.svg) {
+      notify('SVG export URL is not available.');
+      return;
+    }
+    simulateDownload(getFileName('svg'), $urlsStore.svg);
+    logEvent('download', { source: 'top_menu', type: 'svg' });
+    open = false;
   };
 </script>
 

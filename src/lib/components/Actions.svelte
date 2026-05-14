@@ -279,7 +279,7 @@ ${svgString}`);
   </div>
 {/snippet}
 
-<Card title="Actions" isOpen isStackable icon={{ component: DownloadIcon, class: 'rotate-180' }}>
+<Card title="Actions" isStackable icon={{ component: DownloadIcon, class: 'rotate-180' }}>
   <div class="flex min-w-fit flex-col gap-2 p-2">
     <div class="flex w-full items-center gap-2 py-2 whitespace-nowrap">
       PNG size
