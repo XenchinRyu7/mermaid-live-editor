@@ -11,6 +11,7 @@
   import Navbar from '$/components/Navbar.svelte';
   import PanZoomToolbar from '$/components/PanZoomToolbar.svelte';
   import Preset from '$/components/Preset.svelte';
+  import QuickExportMenu from '$/components/QuickExportMenu.svelte';
   import Share from '$/components/Share.svelte';
   import SyncRoughToolbar from '$/components/SyncRoughToolbar.svelte';
   import { Button } from '$/components/ui/button';
@@ -91,6 +92,7 @@
       <HistoryIcon />
     </Toggle>
     <Share />
+    <QuickExportMenu />
     <McWrapper>
       <Button
         variant="accent"
