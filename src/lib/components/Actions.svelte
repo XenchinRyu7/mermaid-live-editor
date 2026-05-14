@@ -11,6 +11,7 @@
   import { getDomain } from '$/util/util';
   import { browser } from '$app/environment';
   import { waitForRender } from '$lib/util/autoSync';
+  import { notify } from '$lib/util/notify';
   import { inputStateStore, stateStore, urlsStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
@@ -200,22 +201,37 @@ ${svgString}`);
   };
 
   const onCopyClipboard = async (event: Event) => {
-    await exportImage(event, clipboardCopy);
-    logEvent('copyClipboard');
+    try {
+      await exportImage(event, clipboardCopy);
+      logEvent('copyClipboard');
+    } catch (error) {
+      console.error(error);
+      notify('Failed to copy image to clipboard.');
+    }
   };
 
   const onDownloadPNG = async (event: Event) => {
-    await exportImage(event, downloadImage);
-    logEvent('download', {
-      type: 'png'
-    });
+    try {
+      await exportImage(event, downloadImage);
+      logEvent('download', {
+        type: 'png'
+      });
+    } catch (error) {
+      console.error(error);
+      notify('Failed to export PNG. Make sure the diagram has no errors.');
+    }
   };
 
   const onDownloadSVG = () => {
-    simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
-    logEvent('download', {
-      type: 'svg'
-    });
+    try {
+      simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
+      logEvent('download', {
+        type: 'svg'
+      });
+    } catch (error) {
+      console.error(error);
+      notify('Failed to export SVG. Make sure the diagram has no errors.');
+    }
   };
 
   let gistURL = $state('');
@@ -263,7 +279,7 @@ ${svgString}`);
   </div>
 {/snippet}
 
-<Card title="Actions" isStackable icon={{ component: DownloadIcon, class: 'rotate-180' }}>
+<Card title="Actions" isOpen isStackable icon={{ component: DownloadIcon, class: 'rotate-180' }}>
   <div class="flex min-w-fit flex-col gap-2 p-2">
     <div class="flex w-full items-center gap-2 py-2 whitespace-nowrap">
       PNG size
