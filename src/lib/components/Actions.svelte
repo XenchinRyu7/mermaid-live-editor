@@ -218,7 +218,7 @@ ${svgString}`);
       });
     } catch (error) {
       console.error(error);
-      notify('Failed to export PNG. Make sure the diagram has no errors.');
+      notify('Failed to export PNG. Please try again.');
     }
   };
 
@@ -230,7 +230,7 @@ ${svgString}`);
       });
     } catch (error) {
       console.error(error);
-      notify('Failed to export SVG. Make sure the diagram has no errors.');
+      notify('Failed to export SVG. Please try again.');
     }
   };
 
