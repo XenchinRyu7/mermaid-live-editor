@@ -11,6 +11,7 @@
   import { getDomain } from '$/util/util';
   import { browser } from '$app/environment';
   import { waitForRender } from '$lib/util/autoSync';
+  import { notify } from '$lib/util/notify';
   import { inputStateStore, stateStore, urlsStore } from '$lib/util/state';
   import { logEvent } from '$lib/util/stats';
   import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
@@ -200,22 +201,37 @@ ${svgString}`);
   };
 
   const onCopyClipboard = async (event: Event) => {
-    await exportImage(event, clipboardCopy);
-    logEvent('copyClipboard');
+    try {
+      await exportImage(event, clipboardCopy);
+      logEvent('copyClipboard');
+    } catch (error) {
+      console.error(error);
+      notify('Failed to copy image to clipboard.');
+    }
   };
 
   const onDownloadPNG = async (event: Event) => {
-    await exportImage(event, downloadImage);
-    logEvent('download', {
-      type: 'png'
-    });
+    try {
+      await exportImage(event, downloadImage);
+      logEvent('download', {
+        type: 'png'
+      });
+    } catch (error) {
+      console.error(error);
+      notify('Failed to export PNG. Please try again.');
+    }
   };
 
   const onDownloadSVG = () => {
-    simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
-    logEvent('download', {
-      type: 'svg'
-    });
+    try {
+      simulateDownload(getFileName('svg'), `data:image/svg+xml;base64,${getBase64SVG()}`);
+      logEvent('download', {
+        type: 'svg'
+      });
+    } catch (error) {
+      console.error(error);
+      notify('Failed to export SVG. Please try again.');
+    }
   };
 
   let gistURL = $state('');
